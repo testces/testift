@@ -1,0 +1,26 @@
+#include "ift.h"
+
+int main(int argc, char *argv[]) 
+{
+
+  if (argc!=3)
+    iftError("Usage: iftAlignFingerPatch <finger_patch.png> <aligned_finger_patch.png>","main");
+
+  timer *t1=iftTic();
+  
+  iftImage *img  = iftReadImageByExt(argv[1]);
+  iftImage *bin  = iftThreshold(img,1,255,255);
+  iftDestroyImage(&img);
+  iftImage *rbin = iftAlignObject(bin);
+
+  iftWriteImageByExt(rbin,argv[2]); 
+  
+  iftDestroyImage(&rbin);
+  iftDestroyImage(&bin);
+  
+  timer *t2=iftToc(); 
+  printf("%f ms\n",iftCompTime(t1,t2)); 
+ 
+  return(0);
+}
+
